@@ -10,14 +10,15 @@ const puppeteer = require('puppeteer');
     page.on('console', msg => console.log(msg.text()));
 
     await page.goto('https://www.google.com/doodles/');
-    await page.addScriptTag({ path: 'helper.js' });
+    await page.addScriptTag({ path: 'cssxpathutils.js' });
 
     const itens = await page.evaluate(() => {
         debugger;
-        return _findElemByText({
-            str: '/denmark.*national.*day.*2018/',
-            selector: ['a'],
-        });
+        try {
+            return retrieveCssOrXpathSelector('denmark.*national.*day.*2018', ['a'], 'css');
+        } catch (err) {
+            console.log(err);
+        }
     });
 
     console.log(itens);
